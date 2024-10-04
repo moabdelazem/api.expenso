@@ -12,7 +12,7 @@ expensesRoute
     // Get all expenses from the database
     const data = await db.expenses.findMany();
 
-    return c.json({ data });
+    return c.json(data);
   })
   .get("/total-expense", async (c) => {
     // Get the total amount of all expenses
