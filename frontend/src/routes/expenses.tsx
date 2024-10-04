@@ -77,7 +77,7 @@ function ExpenseDisplay() {
         description: "The expense has been successfully removed.",
       });
     },
-    onError: (error) => {
+    onError: () => {
       toast({
         title: "Error",
         description: "Failed to delete the expense. Please try again.",
@@ -197,7 +197,7 @@ function ExpenseDisplay() {
                     <TableCell>
                       <div className="flex items-center">
                         <CalendarIcon className="w-4 h-4 mr-1 text-muted-foreground" />
-                        {new Date(expense.createdAt).toLocaleDateString()}
+                        {new Date(expense.createdAt).toDateString() || "-"}
                       </div>
                     </TableCell>
                     <TableCell>

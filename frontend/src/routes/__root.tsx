@@ -40,7 +40,7 @@ function RootComponent() {
                 whileHover={{ rotate: 360 }}
                 transition={{ duration: 0.5 }}
               >
-                <DollarSign className="w-8 h-8 text-blue-600 dark:text-blue-400" />
+                <DollarSign className="w-8 h-8 text-green-600 dark:text-green-400" />
               </motion.div>
               <span className="text-xl font-bold text-gray-800 dark:text-white">
                 Expenso
@@ -131,7 +131,7 @@ function RootComponent() {
             </p>
             <div className="flex items-center space-x-4">
               <a
-                href="https://github.com/moabdelazem/expenso"
+                href="https://github.com/moabdelazem/api.expenso"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-white transition-colors duration-200"
@@ -156,7 +156,7 @@ interface NavLinkProps {
 const NavLink: React.FC<NavLinkProps> = ({ to, icon, children }) => (
   <Link
     to={to}
-    className="flex items-center space-x-2 px-3 py-2 rounded-md text-sm font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-neutral-800 transition-colors duration-200 [&.active]:bg-blue-50 dark:[&.active]:bg-blue-900/20 [&.active]:text-blue-600 dark:[&.active]:text-blue-400"
+    className="flex items-center space-x-2 px-3 py-2 rounded-md text-sm font-medium text-gray-700 dark:text-gray-200 hover:bg-green-100 dark:hover:bg-neutral-800 transition-colors duration-200 [&.active]:bg-green-50 dark:[&.active]:bg-green-900/20 [&.active]:text-green-600 dark:[&.active]:text-green-400"
   >
     {icon}
     <span>{children}</span>

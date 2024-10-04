@@ -9,7 +9,8 @@ export const expensesRoute = new Hono();
 // Set up the expenses route
 expensesRoute
   .get("/", async (c) => {
-    // Get all expenses from the database
+    // Get the total amount of all expenses
+    await new Promise((resolve) => setTimeout(resolve, 2000));
     const data = await db.expenses.findMany();
 
     return c.json(data);
