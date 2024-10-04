@@ -1,0 +1,22 @@
+services:
+  expenso_db:
+    image: postgres:latest
+    container_name: expenso_db
+    environment:
+      POSTGRES_USER: expenso
+      POSTGRES_PASSWORD: expenso
+      POSTGRES_DB: expenso
+      POSTGRES_ROOT_PASSWORD: expenso
+    ports:
+      - "5432:5432"
+    volumes:
+      - expenso_db_data:/var/lib/postgresql/data
+    networks:
+      - backend
+
+volumes:
+  expenso_db_data:
+
+networks:
+  backend:
+    driver: bridge
