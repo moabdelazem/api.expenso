@@ -1,84 +1,52 @@
 import { zValidator } from "@hono/zod-validator";
 import { Hono } from "hono";
 import { postExpenseSchema } from "../sharedTypes";
+import { db } from "../db/index";
 
+// Create a new Hono instance to handle the expenses route
 export const expensesRoute = new Hono();
 
-// !FOR TESTING PURPOSES ONLY!
-// FAKE EXPENSES DATA
-interface Expense {
-  id: number;
-  name: string;
-  amount: number;
-  created_at: string;
-}
-
-const fakeExpenses: Expense[] = [
-  {
-    id: 1,
-    name: "Groceries",
-    amount: 100,
-    created_at: new Date().toISOString(),
-  },
-  {
-    id: 2,
-    name: "Rent",
-    amount: 1000,
-    created_at: new Date().toISOString(),
-  },
-  {
-    id: 3,
-    name: "Utilities",
-    amount: 200,
-    created_at: new Date().toISOString(),
-  },
-];
-
+// Set up the expenses route
 expensesRoute
   .get("/", async (c) => {
-    return c.json(fakeExpenses);
+    // Get all expenses from the database
+    const data = await db.expenses.findMany();
+
+    return c.json({ data });
   })
-  .get("/:id", async (c) => {
-    const id = c.req.param("id");
+  .get("/total-expense", async (c) => {
+    // Get the total amount of all expenses
+    const total = await db.expenses.aggregate({
+      _sum: {
+        amount: true,
+      },
+    });
 
-    const expense = fakeExpenses.find((e) => e.id === parseInt(id));
-
-    if (!expense) {
-      c.status(404);
-
-      return c.json({ message: "Expense not found" });
-    }
-
-    return c.json({ expense });
+    return c.json({ total });
   })
   .post("/", zValidator("json", postExpenseSchema), async (c) => {
+    // Get name, amount from the request body
     const { name, amount } = c.req.valid("json");
 
-    const newExpense: Expense = {
-      id: fakeExpenses.length + 1,
-      name,
-      amount: parseFloat(amount),
-      created_at: new Date().toISOString(),
-    };
-
-    fakeExpenses.push(newExpense);
-
-    c.status(201);
+    // Create a new expense in the database
+    const newExpense = await db.expenses.create({
+      data: {
+        name,
+        amount: parseFloat(amount),
+      },
+    });
 
     return c.json(newExpense);
   })
   .delete("/:id", async (c) => {
     const id = c.req.param("id");
 
-    const index = fakeExpenses.findIndex((e) => e.id === parseInt(id));
+    // Delete the expense from the database
+    const deletedExpense = await db.expenses.delete({
+      where: {
+        id: id,
+      },
+    });
 
-    if (index === -1) {
-      c.status(404);
-
-      return c.json({ message: "Expense not found" });
-    }
-
-    fakeExpenses.splice(index, 1);
-
-    return c.json({ message: "Expense deleted" });
+    return c.json({ deletedExpense });
   });
