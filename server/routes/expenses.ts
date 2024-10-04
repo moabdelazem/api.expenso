@@ -16,13 +16,17 @@ expensesRoute
   })
   .get("/total-expense", async (c) => {
     // Get the total amount of all expenses
+    await new Promise((resolve) => setTimeout(resolve, 2000));
+
     const total = await db.expenses.aggregate({
       _sum: {
         amount: true,
       },
     });
 
-    return c.json({ total });
+    const totalvalue = total._sum.amount;
+
+    return c.json({ totalvalue });
   })
   .post("/", zValidator("json", postExpenseSchema), async (c) => {
     // Get name, amount from the request body
