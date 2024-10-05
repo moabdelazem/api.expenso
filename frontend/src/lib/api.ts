@@ -20,3 +20,18 @@ export const getAllExpensesQueryOptions = queryOptions({
   queryFn: getAllExpenses,
   staleTime: 1000 * 60 * 5,
 });
+
+export async function createExpense(data: any) {
+  const res = await api.expenses.$post({
+    json: data,
+  });
+  if (!res.ok) {
+    throw new Error("Failed to create expense");
+  }
+  return res.json();
+}
+
+export const createExpenseQueryOptions = queryOptions({
+  queryKey: ["create-expense"],
+  queryFn: createExpense,
+});
